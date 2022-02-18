@@ -97,12 +97,12 @@ def camera1():
     ##MASK DETECTION
     # prototxtPath = r"Mask_detection\face_detector\deploy.prototxt"
     # weightsPath = r"Mask_detection\face_detector\res10_300x300_ssd_iter_140000.caffemodel"
-    prototxtPath = r"C:\Users\91638\OneDrive\Documents\3rd sem\3rd Sem Assignments\SE lab\final\Mask_detection\face_detector\deploy.prototxt"
-    weightsPath = r"C:\Users\91638\OneDrive\Documents\3rd sem\3rd Sem Assignments\SE lab\final\Mask_detection\face_detector\res10_300x300_ssd_iter_140000.caffemodel"
+    prototxtPath = r"C:\Users\91638\OneDrive\Documents\GitHub\V-TOUCH\Mask_detection\face_detector\deploy.prototxt"
+    weightsPath = r"C:\Users\91638\OneDrive\Documents\GitHub\V-TOUCH\Mask_detection\face_detector\res10_300x300_ssd_iter_140000.caffemodel"
     faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
     # # load the face mask detector model from disk
-    maskNet = load_model(r"C:\Users\91638\OneDrive\Documents\3rd sem\3rd Sem Assignments\SE lab\final\Mask_detection\mask_detector.model")
+    maskNet = load_model(r"C:\Users\91638\OneDrive\Documents\GitHub\V-TOUCH\Mask_detection\mask_detector.model")
 
     while True:
         wait=1
