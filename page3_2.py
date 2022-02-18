@@ -10,7 +10,7 @@ from page4 import page4
 import cv2
 import time
 import mediapipe as mp
-
+from page7 import page7
 
 #list for holding pins
 pin = [-1]
@@ -223,19 +223,24 @@ def finger_counter():
 
 ############################### page3_2 function ##############################
 def page3_2():
-              
-        labelfont = ('Helvetica', 25, 'bold')
-        re_btn = Button(frame,text="Re-enter",bg="#e6a919",command=lambda:re_enter(0))
-        re_btn.config(font = labelfont)
-        re_btn.place(relx=0.1,rely=0.55,relheight=0.2,relwidth=0.3)
 
-        finger_counter()
+    labelfont = ('Helvetica', 25, 'bold')
+    cancel = Button(frame,text="Cancel",bg="#e6a919",command=lambda:page7)
+    cancel.config(font = labelfont)
+    cancel.place(relx=0.05,rely=0.55,relheight=0.2,relwidth=0.25)
+            
+    re_btn = Button(frame,text="Re-enter",bg="#e6a919",command=lambda:re_enter(0))
+    re_btn.config(font = labelfont)
+    re_btn.place(relx=0.37,rely=0.55,relheight=0.2,relwidth=0.25)
 
-        #print(ans)
-        #pinholder = Label(frame, textvariable=ans, fg="black")
-        #pinholder.place(relx=0.3, rely=0.3, relheight=0.15, relwidth=0.4)
+    finger_counter()
 
-        labelfont = ('Helvetica', 25, 'bold')
-        next_btn = Button(frame,text="Next",bg="#e6a919",command=page4)
-        next_btn.config(font = labelfont)
-        next_btn.place(relx=0.6,rely=0.55,relheight=0.2,relwidth=0.3)
+    #print(ans)
+    #pinholder = Label(frame, textvariable=ans, fg="black")
+    #pinholder.place(relx=0.3, rely=0.3, relheight=0.15, relwidth=0.4)
+
+    re_btn.config(state=DISABLED)
+    labelfont = ('Helvetica', 25, 'bold')
+    next_btn = Button(frame,text="Next",bg="#e6a919",command=page4)
+    next_btn.config(font = labelfont)
+    next_btn.place(relx=0.7,rely=0.55,relheight=0.2,relwidth=0.25)

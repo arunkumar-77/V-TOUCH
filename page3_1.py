@@ -1,6 +1,7 @@
 from tkinter import *
 from basic import frame,clear_frame,bgcolor
 from page3_2 import page3_2
+from page7 import page7
 from threading import Timer
 
 def page3_1():
@@ -15,14 +16,19 @@ def page3_1():
         pinholder.place(relx=0.3,rely=0.3,relheight=0.15,relwidth=0.4)
 
         labelfont = ('Helvetica', 25, 'bold')
+        cancel = Button(frame,text="Cancel",bg="#e6a919",state=DISABLED,command=lambda:page7)
+        cancel.config(font = labelfont)
+        cancel.place(relx=0.05,rely=0.55,relheight=0.2,relwidth=0.25)
+
+        labelfont = ('Helvetica', 25, 'bold')
         re_btn = Button(frame,text="Re-enter",bg="#e6a919",state=DISABLED)
         re_btn.config(font = labelfont)
-        re_btn.place(relx=0.1,rely=0.55,relheight=0.2,relwidth=0.3)
+        re_btn.place(relx=0.37,rely=0.55,relheight=0.2,relwidth=0.25)
 
         labelfont = ('Helvetica', 25, 'bold')
         next_btn = Button(frame,text="Next",bg="#e6a919",state=DISABLED)
         next_btn.config(font = labelfont)
-        next_btn.place(relx=0.6,rely=0.55,relheight=0.2,relwidth=0.3)
+        next_btn.place(relx=0.7,rely=0.55,relheight=0.2,relwidth=0.25)
 
         labelfont = ('Helvetica', 20, 'bold')
         note = Label(frame,text="Enter your PIN with zero seperated\nEg : If your PIN is 12345 then enter 0102030405",bg=bgcolor,fg="white")

@@ -6,7 +6,6 @@ import mediapipe as mp
 import math
 from basic import frame
 from tkinter import *
-from tkinter import messagebox
 
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 from tensorflow.keras.preprocessing.image import img_to_array
@@ -14,12 +13,6 @@ from tensorflow.keras.models import load_model
 import os
 
 
-
-def hide_widget(widget):
-   widget.pack_forget()
-
-def show_widget(widget):
-   widget.pack()
 
 def detect_and_predict_mask(r_img, faceNet, maskNet):
     # grab the dimensions of the r_img and then construct a blob
@@ -97,29 +90,8 @@ def detect_and_predict_mask(r_img, faceNet, maskNet):
             pred=list(p)
 
     return pred
-    
-    # if(box and pred):
-    #     #for (box, pred) in zip(locs, preds):
-    #     # unpack the bounding box and predictions
-    #     (startX, startY, endX, endY) = box
-    #     (mask, withoutMask) = pred
-
-    #     # determine the class label and color we'll use to draw
-    #     # the bounding box and text
-    #     label = "Mask" if mask > withoutMask else "No Mask"
-    #     color = (0, 255, 0) if label == "Mask" else (0, 0, 255)            
-
-        
-
-
-
-
+       
 def camera1():
-    label= Label(text= "Showing the Message", font= ('Helvetica bold', 14),state=DISABLED)
-    #label.place(x=0,y=0)
-    #hide_widget(label)
-    #label.place_forget()
-
 
     ##VIRTUAL MOUSE
     ####################################################
@@ -134,22 +106,21 @@ def camera1():
     smoothening = 7
     plocX,plocY = 0,0
     clocX,clocY = 0,0
-    ###################################################
     mpHands = mp.solutions.hands
     hands = mpHands.Hands()
     tipIds = [4, 8, 12, 16, 20]
+    ###################################################
 
     ##MASK DETECTION
-    # prototxtPath = r"Mask_detection\face_detector\deploy.prototxt"
-    # weightsPath = r"Mask_detection\face_detector\res10_300x300_ssd_iter_140000.caffemodel"
+    ###################################################
+
+    label= Label(text= "WEAR YOUR MASK \nTO CONTINUE TRANSACTION", font= ('Helvetica bold', 70))
     prototxtPath = r"C:\Users\91638\OneDrive\Documents\GitHub\V-TOUCH\Mask_detection\face_detector\deploy.prototxt"
     weightsPath = r"C:\Users\91638\OneDrive\Documents\GitHub\V-TOUCH\Mask_detection\face_detector\res10_300x300_ssd_iter_140000.caffemodel"
     faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
     # # load the face mask detector model from disk
     maskNet = load_model(r"C:\Users\91638\OneDrive\Documents\GitHub\V-TOUCH\Mask_detection\mask_detector.model")
-
-    
 
     i=0
     no = 0
@@ -176,9 +147,9 @@ def camera1():
             Label(bg="yellow").place(relx=0.95,rely=0.03,relheight=0.03,relwidth=0.03)
             #########################  Finding largest hands  #####################
             best = [0, 0]
-            for i in range(len(results.multi_hand_landmarks)):
+            for j in range(len(results.multi_hand_landmarks)):
                 tx, ty, bx, by = 0, 0, 0, 0
-                for Id, lm in enumerate(results.multi_hand_landmarks[i].landmark):
+                for Id, lm in enumerate(results.multi_hand_landmarks[j].landmark):
                     if (Id == 12):
                         tx, ty = lm.x, lm.y
                     if (Id == 0):
@@ -186,7 +157,7 @@ def camera1():
 
                 temp = math.hypot(tx - bx, ty - by)
                 if temp > best[1]:
-                    best[0] = i
+                    best[0] = j
                     best[1] = temp
 
             myHand = results.multi_hand_landmarks[best[0]]
@@ -290,59 +261,43 @@ def camera1():
 
         ###############################################################################
         ###MASK DETECTION
-        r_img = cv2.resize(img,(400,400))
 
-        # detect faces in the r_img and determine if they are wearing a
-        # face mask or not
-        
-
-        # while(True):
-        if(i<10):
+        if(i%5==0):
+            r_img = cv2.resize(img,(400,400))
             pred = detect_and_predict_mask(r_img, faceNet, maskNet)
             if pred:
                 ans = 0 if pred[0]>pred[1] else 1            ##  0->mask  and  1->no mask
                 no+=ans
+                print(i,": 1 : ",flag,' : ',no)
             else:
                 i-=1
-        elif(i==10 and no>=5 and flag==0):
+        elif(i==31 and no>=4 and flag==0):
+            print(i,": 2 : ",flag,' : ',no)
             ##block
             #show_widget(label)
-            label.place(x=0,y=0)
-            print("block")
+            label.place(relheight=0.9,relwidth=0.9,relx=0.05,rely=0.05)
             flag=1  ##nomask
-        elif(i==10 and no<5 and flag==1):
+            print(flag,no)
+            i= -1
+            no=0
+        elif(i==31 and no<=3 and flag==1):
+            print(i,": 3 : ",flag,' : ',no)
             ##unblock
             #hide_widget(label)
             label.place_forget()
-            print("unblock")
             flag=0  ##mask
-        elif(i==30):
+            print(flag,no)
             i=-1
             no=0
+        elif(i==31):
+            i=-1
+            no=0
+            print(i,": 4 : ",flag,' : ',no)
         else:
-            pass
+            print(i,": 5 : ",flag,' : ',no)
         i+=1
-
-        # if pred:
-        #     (mask, withoutMask) = pred
-
-        #     # determine the class label and color we'll use to draw
-        #     # the bounding box and text
-        #     label = "Mask" if mask > withoutMask else "No Mask"
-        #     color = (0, 255, 0) if label == "Mask" else (0, 0, 255) 
-
-        #     # include the probability in the label
-        #     label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
-
-        #     # display the label and bounding box rectangle on the output
-        #     # r_img
-        #     cv2.putText(img, label, (10, 20 - 10),
-        #                             cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
-        #     ##cv2.rectangle(img, (startX, startY), (endX, endY), color, 2)
             
         ##################################################################################
-
-
         # 11. Frame Rate
         cTime = time.time()
         fps = 1 / (cTime - pTime)
