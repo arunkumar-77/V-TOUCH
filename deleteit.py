@@ -15,7 +15,13 @@ def fn():
     label= Label(frame, text= "Showing the Message", font= ('Helvetica bold', 14))
     label.pack(pady=20)
     time.sleep(10)
-    hide_widget(label)
+    # hide_widget(label)
+    label.config(state=DISABLED)
     time.sleep(10)
-    show_widget(label)
+    # show_widget(label)
+    label.config(state=ACTIVE)
+
+
+
+
 
