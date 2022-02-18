@@ -75,6 +75,7 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
     # locations
     return (locs, preds)
 
+
 def camera1():
     ##VIRTUAL MOUSE
     ####################################################
@@ -246,8 +247,22 @@ def camera1():
         (locs, preds) = detect_and_predict_mask(r_img, faceNet, maskNet)
 
         # loop over the detected face locations and their corresponding
-        # locations
-        for (box, pred) in zip(locs, preds):
+        # locations to get largest face
+    
+        min_area=0
+        box=()
+        pred=()
+        for (b, p) in zip(locs, preds):            
+            (startX, startY, endX, endY) = b
+            x = endX-startX
+            y = endY-startY
+            if(x*y > min_area):
+                min_area = x*y
+                box=b
+                pred=list(p)
+        
+        if(box and pred):
+            #for (box, pred) in zip(locs, preds):
             # unpack the bounding box and predictions
             (startX, startY, endX, endY) = box
             (mask, withoutMask) = pred
@@ -258,8 +273,9 @@ def camera1():
             color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
 
             if label=="No Mask":
-                print("NO MASK")    
+                #print("NO MASK")    
                 # messagebox.showwarning("showwarning", "Warning")    
+                pass
                 
 
             # include the probability in the label
