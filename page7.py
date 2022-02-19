@@ -1,10 +1,10 @@
 from tkinter import *
 from basic import frame,clear_frame,bgcolor,engine
-#from page1 import page1
-#from threading import Timer
 
 def page7():
     clear_frame()
+
+    print("Transaction Successful")
 
     labelfont = ('Helvetica', 100, 'bold')
     ins1=Label(frame,text='WELCOME',bg=bgcolor,fg="white")
@@ -20,5 +20,3 @@ def page7():
     engine.say(text)
     engine.runAndWait()
     
-    # r = Timer(2.0, page1)
-    # r.start()

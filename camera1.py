@@ -92,7 +92,7 @@ def detect_and_predict_mask(r_img, faceNet, maskNet):
     return pred
        
 def camera1():
-
+    print("Session Details")
     ##VIRTUAL MOUSE
     ####################################################
     wScr, hScr = autopy.screen.size()
@@ -268,33 +268,38 @@ def camera1():
             if pred:
                 ans = 0 if pred[0]>pred[1] else 1            ##  0->mask  and  1->no mask
                 no+=ans
-                print(i,": 1 : ",flag,' : ',no)
+
+                (mask, withoutMask) = pred
+                # determine the class label and color we'll use to draw
+                # the bounding box and text
+                info = "Mask" if mask > withoutMask else "No Mask"
+                color = (0, 255, 0) if info == "Mask" else (0, 0, 255)
+
+                # include the probability in the label
+                info = "{}: {:.2f}%".format(info, max(mask, withoutMask) * 100)
             else:
                 i-=1
         elif(i==31 and no>=4 and flag==0):
-            print(i,": 2 : ",flag,' : ',no)
             ##block
-            #show_widget(label)
+            print("User didn't wore mask - BLOCK")
             label.place(relheight=0.9,relwidth=0.9,relx=0.05,rely=0.05)
             flag=1  ##nomask
-            print(flag,no)
             i= -1
             no=0
         elif(i==31 and no<=3 and flag==1):
-            print(i,": 3 : ",flag,' : ',no)
             ##unblock
-            #hide_widget(label)
+            print("User wore mask - UNBLOCK")
             label.place_forget()
             flag=0  ##mask
-            print(flag,no)
             i=-1
             no=0
         elif(i==31):
             i=-1
             no=0
-            print(i,": 4 : ",flag,' : ',no)
         else:
-            print(i,": 5 : ",flag,' : ',no)
+            pass
+        # display the label 
+        cv2.putText(img, info, (100, 100),cv2.FONT_HERSHEY_SIMPLEX, 1, color, 4)
         i+=1
             
         ##################################################################################

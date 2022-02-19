@@ -19,6 +19,7 @@ pin = [-1]
 next=0
 prev=""
 ans = ""
+close=0
 def updated(x):
     global pinholder,prev    
     ans = prev + str(x)
@@ -30,8 +31,8 @@ def updated(x):
     prev = ans
 
 def re_enter(x):
+    print("Re-entering PIN")
     if x==1:
-        print("Error")
         messagebox.showwarning("warning","Enter zero seperated PIN with zero at beginning")
     global pin
     pin=[-1]
@@ -52,23 +53,22 @@ def finger_counter():
             s += str(i);
         if (s == "00000"):
             return (0)
-        elif (s == "01000"):
+        elif (s == "01000" or s == "00010"):
             return (1)
-        elif (s == "01100"):
+        elif (s == "01100" or s == "00110"):
             return (2)
-        elif (s == "00111"):
+        elif (s == "00111" or s == "11100"):
             return (3)
-        elif (s == "01111"):
+        elif (s == "01111" or s == "11110"):
             return (4)
         elif (s == "11111"):
             return (5)
         else:
             return(-1)
 
-
-
     # Setting Webcam Parameters
     wcam, hcam = 640, 480
+    global cap
     cap = cv2.VideoCapture(1)
     cap.set(3, wcam)
     cap.set(4, hcam)
@@ -89,11 +89,8 @@ def finger_counter():
         5 : 0
     }
 
-    
-
     # When the Webcam turned on
-    while True:
-        
+    while True:   
         success, img = cap.read()
         # Calling handDetector Methods
         #img = detector.findHands(img, draw=True)
@@ -123,7 +120,6 @@ def finger_counter():
                 # print(id, cx, cy)
                 lmList.append([id, cx, cy])
                 if False:
-                    # SYNTAX: cv2.circle(image, center_coordinates, radius, color, thickness)
                     cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
     ##############################################################################################
             
@@ -133,11 +129,18 @@ def finger_counter():
         # If the list is not empty (i.e it finally finds position of hand)
         if (len(lmList) != 0):
             fingers = []
-            # thumb - thumb_TIP > thumb_IP
-            if (lmList[tipId[0]][1] > lmList[tipId[0] - 1][1]):
-                fingers.append(1)
+            ## finding left or right hand and changing thumb coordinates
+            if(lmList[tipId[0]][1] <= lmList[tipId[4]][1]):
+                # thumb - thumb_TIP > thumb_IP
+                if (lmList[tipId[0]][1] >= lmList[tipId[0] - 1][1] ):
+                    fingers.append(0)
+                else:
+                    fingers.append(1)
             else:
-                fingers.append(0)
+                if (lmList[tipId[0]][1] <= lmList[tipId[0] - 1][1] ):
+                    fingers.append(0)
+                else:
+                    fingers.append(1)
 
             # 4 fingers - TIP < DIP
             for id in range(1, len(tipId)):
@@ -158,7 +161,6 @@ def finger_counter():
                 pass
             
             else :
-                # SYNTAX - cv2.putText(image, text, org, font, fontScale, color[, thickness[, lineType[, bottomLeftOrigin]]])
                 cv2.putText(img, str(val), (45, 375), cv2.FONT_HERSHEY_PLAIN,
                             10, (255, 0, 0), 20)
 
@@ -178,18 +180,10 @@ def finger_counter():
                         break
                 
                 if reinit==1 :
-                    # for k,v in num.items():
-                    #     v=0
-                    #num |= {0:0,1:0,2:0,3:0,4:0,5:0}
-                    #num = { **num, 0:0,1:0,2:0,3:0,4:0,5:0}
                     num.update({0 : 0, 1 : 0, 2 : 0, 3 : 0, 4:0 , 5:0})
-
-            #print(temp," : ",val," ",num.values()," ",pin)
-            #temp+=1
 
 
         cTime = time.time()  # Current Time
-
         # Calculating the fps
         # fps will be number of frame processed in given time frame
         # since their will be most of time error of 0.001 second
@@ -205,7 +199,7 @@ def finger_counter():
         # Showing Image
         cv2.imshow("image", img)
 
-        if (cv2.waitKey(2) & 0xFF == ord('q')) or (len(pin)==11) :
+        if (cv2.waitKey(2) & 0xFF == ord('q')) or (len(pin)==11) or close==1:
             break
     
 
@@ -213,19 +207,24 @@ def finger_counter():
     #cv2.destroyAllWindows()
     pin = [str(i) for i in pin if i]
     pin= pin[1:]
-    print("PIN : ","".join(pin))
+    if(close==0):
+        print("PIN : ","".join(pin))
     return
 
 
 
-
+def fn():
+    global close
+    close=1
+    print("Transaction Cancelled")
+    page7()
 
 
 ############################### page3_2 function ##############################
 def page3_2():
 
     labelfont = ('Helvetica', 25, 'bold')
-    cancel = Button(frame,text="Cancel",bg="#e6a919",command=lambda:page7)
+    cancel = Button(frame,text="Cancel",bg="#e6a919",command=fn)
     cancel.config(font = labelfont)
     cancel.place(relx=0.05,rely=0.55,relheight=0.2,relwidth=0.25)
             
@@ -239,8 +238,13 @@ def page3_2():
     #pinholder = Label(frame, textvariable=ans, fg="black")
     #pinholder.place(relx=0.3, rely=0.3, relheight=0.15, relwidth=0.4)
 
-    re_btn.config(state=DISABLED)
-    labelfont = ('Helvetica', 25, 'bold')
-    next_btn = Button(frame,text="Next",bg="#e6a919",command=page4)
-    next_btn.config(font = labelfont)
-    next_btn.place(relx=0.7,rely=0.55,relheight=0.2,relwidth=0.25)
+    if close==0:
+
+        re_btn = Button(frame,text="Re-enter",bg="#e6a919",command=lambda:re_enter(0),state=DISABLED)
+        re_btn.config(font = labelfont)
+        re_btn.place(relx=0.37,rely=0.55,relheight=0.2,relwidth=0.25)
+
+        labelfont = ('Helvetica', 25, 'bold')
+        next_btn = Button(frame,text="Next",bg="#e6a919",command=page4)
+        next_btn.config(font = labelfont)
+        next_btn.place(relx=0.7,rely=0.55,relheight=0.2,relwidth=0.25)

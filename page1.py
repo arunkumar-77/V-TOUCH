@@ -8,7 +8,6 @@ def page1():
     labelfont = ('Helvetica', 120, 'bold')
     head=Label(frame,text='V-TOUCH',bg=bgcolor,fg="white",height=2)
     head.config(font = labelfont)
-    #head.place(relx=0.25,rely=0.1)
     head.pack(fill=X)
 
     labelfont = ('Helvetica', 50, 'bold')

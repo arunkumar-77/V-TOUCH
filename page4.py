@@ -31,6 +31,15 @@ def page4():
 
     w = 27
     labelfont = ('Helvetica', 15, 'bold')
+
+    def cancel():
+        print("Transaction Cancelled")
+        page7()
+    
+    def next():
+        print("Entered Amount : ",amount.get())
+        page5()
+
     button_7=Button(frame2,text=" 7",width=w,pady=20,height=3,command=lambda: number("7"),font=labelfont)
     button_8=Button(frame2,text="8",width=w,pady=20,height=3,command=lambda: number("8"),font=labelfont)
     button_9=Button(frame2,text="9",width=w,pady=20,height=3,command=lambda: number("9"),font=labelfont)
@@ -44,11 +53,11 @@ def page4():
     button_1=Button(frame2,text=" 1",width=w,pady=20,height=3,command=lambda: number("1"),font=labelfont)
     button_2=Button(frame2,text="2",width=w,pady=20,height=3,command=lambda: number("2"),font=labelfont)
     button_3=Button(frame2,text="3",width=w,pady=20,height=3,command=lambda: number("3"),font=labelfont)
-    button_cancel=Button(frame2,text="Cancel",width=w,pady=20,height=3,command=page7,font=labelfont)
+    button_cancel=Button(frame2,text="Cancel",width=w,pady=20,height=3,command=cancel,font=labelfont)
 
     button_00=Button(frame2,text="00",width=w,pady=20,height=3,command=lambda: number("00"),font=labelfont)
     button_0=Button(frame2,text="0",width=2*w+1,pady=20,height=3,command=lambda: number("0"),font=labelfont)
-    button_next=Button(frame2,text="Next",width=w,height=3,pady=20,command=page5,font=labelfont)
+    button_next=Button(frame2,text="Next",width=w,height=3,pady=20,command=next,font=labelfont)
 
     button_7.grid(row=1,column=0,padx=10,pady=10)
     button_8.grid(row=1,column=1,padx=10,pady=10)
