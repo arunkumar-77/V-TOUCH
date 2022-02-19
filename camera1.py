@@ -208,7 +208,7 @@ def camera1():
 
     ################################################################################
             # 4. Only Index Finger : Moving Mode
-            if fingers[1] == 1 and fingers[2] == 0:
+            if (fingers[1] == 1 and fingers[2] == 0) or (fingers[1] == 1 and fingers[2] == 0):
                 Label(bg="green").place(relx=0.95,rely=0.03,relheight=0.03,relwidth=0.03)
                 # 5. Convert Coordinates
                 if (x1 <= frameR):
