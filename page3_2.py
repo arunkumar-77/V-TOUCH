@@ -70,8 +70,8 @@ def finger_counter():
     wcam, hcam = 640, 480
     global cap
     cap = cv2.VideoCapture(1)
-    cap.set(3, wcam)
-    cap.set(4, hcam)
+    cap.set(3, wcam+200)
+    cap.set(4, hcam+200)
     pTime = 0  # Previous Time
 
     mpHands = mp.solutions.hands

@@ -125,6 +125,8 @@ def camera1():
     i=0
     no = 0
     flag = 0 ##mask
+    info=""
+    color=(0, 0, 255)
 
     while True:
         wait=1
@@ -261,7 +263,6 @@ def camera1():
 
         ###############################################################################
         ###MASK DETECTION
-
         if(i%5==0):
             r_img = cv2.resize(img,(400,400))
             pred = detect_and_predict_mask(r_img, faceNet, maskNet)
