@@ -2,7 +2,7 @@
 
 Virtual Touch aims in building an interface for ATMs, enabling contactless transaction and also ensures that the user wears mask while transaction.
 
-Note: This code was written in exploratory style.
+Note: This project was written in exploratory style.
 
 ## COMPONENTS
 
